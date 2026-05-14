@@ -57,7 +57,11 @@ class MetasploitModule < Msf::Exploit::Local
         'Arch'           => [ARCH_X64, ARCH_X86, ARCH_AARCH64, ARCH_ARMLE],
         'SessionTypes'   => ['shell', 'meterpreter'],
         'Targets'        => [
-          ['Auto (CopyFail-Go)', {}],
+          ['Auto (CopyFail-Go)', { 'Arch' => [ARCH_X64, ARCH_X86, ARCH_AARCH64, ARCH_ARMLE] }],
+          ['Linux x64',          { 'Arch' => ARCH_X64 }],
+          ['Linux x86',          { 'Arch' => ARCH_X86 }],
+          ['Linux aarch64',      { 'Arch' => ARCH_AARCH64 }],
+          ['Linux armle',        { 'Arch' => ARCH_ARMLE }],
         ],
         'DefaultTarget'  => 0,
         'DisclosureDate' => '2026-05-01', # Approx CopyFail disclosure date
@@ -145,7 +149,21 @@ class MetasploitModule < Msf::Exploit::Local
   end
 
   def fetch_copyfail_binary
-    arch = detect_target_arch
+    if target.name.start_with?('Auto')
+      arch = detect_target_arch
+    else
+      # Map MSF target architecture to our binary arch string
+      msf_arch = target.arch.first
+      arch = case msf_arch
+             when 'x64'     then 'x86_64'
+             when 'x86'     then 'i386'
+             when 'aarch64' then 'aarch64'
+             when 'armle'   then 'armv7l'
+             else detect_target_arch
+             end
+      print_status("Target selected manually. Using mapped architecture: #{arch}")
+    end
+
     meta = COPYFAIL_BINARIES[arch]
 
     explicit = datastore['CopyfailLocalBin'].to_s.strip
