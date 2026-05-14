@@ -53,8 +53,8 @@ class MetasploitModule < Msf::Exploit::Local
           ['URL', 'https://github.com/badsectorlabs/copyfail-go'],
           ['URL', 'https://copy.fail/'],
         ],
-        'Platform'       => 'linux',
-        'Arch'           => [ARCH_X86_64, ARCH_X86, ARCH_AARCH64, ARCH_ARMLE],
+        'Platform'       => ['linux'],
+        'Arch'           => [ARCH_X64, ARCH_X86, ARCH_AARCH64, ARCH_ARMLE],
         'SessionTypes'   => ['shell', 'meterpreter'],
         'Targets'        => [
           ['Auto (CopyFail-Go)', {}],
